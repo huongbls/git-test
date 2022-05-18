@@ -46,7 +46,7 @@ class StaffList extends Component {
   render() {
     const listStaff = this.props.staffs.map((staff) => {
       return (
-        <div key={staff.id} className="col-12 col-md-4 m-1">
+        <div key={staff.id} className="col-12 col-md-6 col-lg-4">
           <div onClick={() => this.onStaffSelect(staff)}>
             <Card>{staff.name}</Card>
           </div>
