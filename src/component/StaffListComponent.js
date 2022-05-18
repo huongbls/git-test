@@ -24,8 +24,10 @@ class StaffList extends Component {
       return (
         <Card>
           <h4>Họ và tên: {staff.name}</h4>
-          <div>Ngày sinh: {staff.doB}</div>
-          <div>Ngày vào công ty: {staff.startDate}</div>
+          <div>Ngày sinh: {dateFormat(staff.doB, "dd/mm/yyyy")}</div>
+          <div>
+            Ngày vào công ty: {dateFormat(staff.startDate, "dd/mm/yyyy")}
+          </div>
           <div>Phòng ban: Hold</div>
           <div>Số ngày nghỉ còn lại {staff.annualLeave}</div>
           <div>Số ngày đã làm thêm: {staff.overTime}</div>
