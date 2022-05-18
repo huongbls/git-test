@@ -28,7 +28,7 @@ class StaffList extends Component {
           <div>
             Ngày vào công ty: {dateFormat(staff.startDate, "dd/mm/yyyy")}
           </div>
-          <div>Phòng ban: Hold</div>
+          <div>Phòng ban: {staff.department.name}</div>
           <div>Số ngày nghỉ còn lại {staff.annualLeave}</div>
           <div>Số ngày đã làm thêm: {staff.overTime}</div>
         </Card>
