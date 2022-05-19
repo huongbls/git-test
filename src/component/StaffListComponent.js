@@ -6,7 +6,12 @@ class StaffList extends Component {
     super(props);
     this.state = {
       selectStaff: null,
+      selectColumn: 3,
     };
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange(event) {
+    this.setState({ selectColumn: event.target.value });
   }
   onStaffSelect(staff) {
     this.setState({ selectStaff: staff });
@@ -38,9 +43,11 @@ class StaffList extends Component {
     }
   }
   render() {
+    const col = this.state.selectColumn;
+    const x = "col-12 col-md-6 col-lg-" + 12 / col;
     const listStaff = this.props.staffs.map((staff) => {
       return (
-        <div key={staff.id} className="col-12 col-md-6 col-lg-4">
+        <div key={staff.id} className={x}>
           <div onClick={() => this.onStaffSelect(staff)}>
             <div className="p-3 my-3 bg-primary text-white">{staff.name}</div>
           </div>
@@ -49,6 +56,27 @@ class StaffList extends Component {
     });
     return (
       <div className="container">
+        <div className="row">
+          <div className="d-none d-lg-block">
+            <label htmlFor="input-column" className="text-primary pl-3 pt-3">
+              Select display column (for laptop only)
+            </label>
+            <br></br>
+            <div className="col-lg-9 pb-3">
+              <select
+                className="form-control"
+                value={this.state.selectColumn}
+                onChange={this.handleChange.bind(this)}
+              >
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>6</option>
+              </select>
+            </div>
+          </div>
+        </div>
         <div className="row">{listStaff}</div>
         <div className="row">{this.renderStaff(this.state.selectStaff)}</div>
       </div>
