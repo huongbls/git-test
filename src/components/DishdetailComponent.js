@@ -6,22 +6,15 @@ import {
   CardText,
   CardBody,
   CardTitle,
+  Breadcrumb,
+  BreadcrumbItem,
 } from "reactstrap";
 import dateFormat from "dateformat";
+import { Link } from "react-router-dom";
 
-// class DishDetail extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       // selectDish: null,
-//     };
-//   }
-// onDishSelect(dish) {
-//   this.setState({ selectDish: dish });
-// }
-function RenderDish(dish) {
-  if (dish != null) {
-    return (
+function RenderDish({ dish }) {
+  return (
+    <div className="col-12 col-md-5 m-1">
       <Card>
         <CardImg width="100%" object src={dish.image} alt={dish.name}></CardImg>
         <CardBody className="text-left">
@@ -29,45 +22,58 @@ function RenderDish(dish) {
           <CardText>{dish.description}</CardText>
         </CardBody>
       </Card>
+    </div>
+  );
+}
+function RenderComment({ comments }) {
+  if (comments != null) {
+    return (
+      <div className="col-12 col-md-5 m-1">
+        <h4>Comments</h4>
+        <ul className="list-unstyled">
+          {comments.map((comment) => {
+            return (
+              <li key={comment.id}>
+                <p>{comment.comment}</p>
+                <p>
+                  {"-- "}
+                  {comment.author} , {dateFormat(comment.date, "mmm dd, yyyy")}
+                </p>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     );
   } else {
     return <div></div>;
   }
 }
-function RenderComment(dish) {
-  if (dish != null) {
-    // console.log(dish.price);
-
-    const listItems = dish.comments.map((d) => (
-      <div key={d.id}>
-        <div className="p-2">{d.comment}</div>
-        <div className="p-2">
-          {"-- " + d.author}, {dateFormat(d.date, "mmm dd, yyyy")}
-        </div>
-      </div>
-    ));
-
+const DishDetail = (props) => {
+  if (props.dish != null) {
     return (
-      <div className="text-left p-3">
-        <h4>Comments</h4>
-        <div>{listItems}</div>
+      <div className="container">
+        <div className="row">
+          <Breadcrumb>
+            <BreadcrumbItem>
+              <Link to="/menu">Menu</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+          </Breadcrumb>
+          <div className="col-12">
+            <h3>{props.dish.name}</h3>
+            <hr />
+          </div>
+        </div>
+        <div className="row">
+          <RenderDish dish={props.dish} />
+          <RenderComment comments={props.comments} />
+        </div>
       </div>
     );
+  } else {
+    return <div></div>;
   }
-}
-const DishDetail = (props) => {
-  return (
-    <div>
-      <div className="row">
-        <div className="col-12 col-md-5 m-1">
-          {RenderDish(props.selectDish)}
-        </div>
-        <div className="col-12 col-md-5 m-1">
-          {RenderComment(props.selectDish)}
-        </div>
-      </div>
-    </div>
-  );
 };
 
 export default DishDetail;
