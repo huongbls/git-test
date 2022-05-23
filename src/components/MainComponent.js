@@ -1,6 +1,9 @@
 import React, { Component } from "react";
+import Header from "./HeaderComponent";
+import Footer from "./FooterComponent";
 import Home from "./HomeComponent";
 import Menu from "./MenuComponent";
+import About from "./AboutComponent";
 import Contact from "./ContactComponent";
 import DishDetail from "./DishdetailComponent";
 import { DISHES } from "../shared/dishes";
@@ -8,8 +11,6 @@ import { COMMENTS } from "../shared/comments";
 import { LEADERS } from "../shared/leaders";
 import { PROMOTIONS } from "../shared/promotions";
 import "../App.css";
-import Header from "./HeaderComponent";
-import Footer from "./FooterComponent";
 import { Switch, Route, Redirect } from "react-router-dom";
 
 class Main extends Component {
@@ -54,6 +55,11 @@ class Main extends Component {
         <Header />
         <Switch>
           <Route path="/home" component={HomePage} />
+          <Route
+            exact
+            path="/aboutus"
+            component={() => <About leaders={this.state.leaders} />}
+          />
           <Route
             exact
             path="/menu"
