@@ -25,7 +25,11 @@ function DeparmentList(props) {
 
   return (
     <div className="container p-3">
-      <h3> Phòng Ban</h3>
+      <div className="row justify-content-between">
+        <div>
+          <h3 className="pl-3">Phòng Ban</h3>
+        </div>
+      </div>
       <hr></hr>
       <div className="row">{deps}</div>
     </div>

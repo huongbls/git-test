@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardImg, CardTitle } from "reactstrap";
 import { Link } from "react-router-dom";
 
@@ -26,11 +26,40 @@ function StaffList(props) {
       );
     });
 
+  const [searchValue, setSearch] = useState();
+
+  const searchStaff = props.staffs
+    .filter((staff) =>
+      // staff.name.toUpperCase().includes(searchValue.toUpperCase())
+      staff.name.toUpperCase().includes(searchValue)
+    )
+    .map((staff) => {
+      return (
+        <div key={staff.id} className="col-6 col-md-4 col-lg-2 p-3">
+          <RenderStaffList staff={staff} />
+        </div>
+      );
+    });
+
   return (
     <div className="container p-3">
-      <h3> Nhân Viên</h3>
+      <div className="row justify-content-between">
+        <div>
+          <h3 className="pl-3">Nhân Viên</h3>
+        </div>
+        <div>
+          <label>
+            <input
+              name="numberOfGuests"
+              placeholder="Search Name"
+              value={searchValue}
+              onChange={(e) => setSearch(e.target.value.toUpperCase())}
+            />
+          </label>
+        </div>
+      </div>
       <hr></hr>
-      <div className="row">{staffs}</div>
+      <div className="row">{searchValue ? searchStaff : staffs}</div>
     </div>
   );
 }
