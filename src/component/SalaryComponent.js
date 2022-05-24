@@ -1,5 +1,12 @@
 import React from "react";
-import { Card, CardText, CardTitle } from "reactstrap";
+import {
+  Card,
+  CardText,
+  CardTitle,
+  Breadcrumb,
+  BreadcrumbItem,
+} from "reactstrap";
+import { Link } from "react-router-dom";
 
 function RenderSalary({ staff }) {
   return (
@@ -32,8 +39,16 @@ function SalaryList(props) {
 
   return (
     <div className="container p-3">
-      <h3> Bảng Lương</h3>
-      <hr></hr>
+      <div className="row">
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <Link to="/staff">Nhân Viên</Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem active>Bảng Lương</BreadcrumbItem>
+        </Breadcrumb>
+      </div>
+      {/* <h3> Bảng Lương</h3>
+      <hr></hr> */}
       <div className="row">{salary}</div>
     </div>
   );
