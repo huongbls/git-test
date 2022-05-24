@@ -29,17 +29,21 @@ function RenderSalary({ staff }) {
 }
 
 function SalaryList(props) {
-  // const salary = props.staffs.map((staff) => {
-  //   return (
-  //     <div key={staff.id} className="col-12 col-md-6 col-lg-4 p-3">
-  //       <RenderSalary staff={staff} />
-  //     </div>
-  //   );
-  // });
+  const salary = props.staffs
+    .sort((a, b) => {
+      return a.id - b.id;
+    })
+    .map((staff) => {
+      return (
+        <div key={staff.id} className="col-12 col-md-6 col-lg-4 p-3">
+          <RenderSalary staff={staff} />
+        </div>
+      );
+    });
 
   const [option, setOption] = useState();
 
-  const AscOrder = props.staffs
+  const ascOrder = props.staffs
     .sort((a, b) => {
       return a.name.localeCompare(b.name);
     })
@@ -51,7 +55,7 @@ function SalaryList(props) {
       );
     });
 
-  const DesOrder = props.staffs
+  const desOrder = props.staffs
     .sort((a, b) => {
       return b.name.localeCompare(a.name);
     })
@@ -63,7 +67,7 @@ function SalaryList(props) {
       );
     });
 
-  const SalaryInc = props.staffs
+  const salaryInc = props.staffs
     .sort((a, b) => {
       const fa = a.salaryScale * 3e6 + a.overTime * 2e5;
       const fb = b.salaryScale * 3e6 + b.overTime * 2e5;
@@ -77,7 +81,7 @@ function SalaryList(props) {
       );
     });
 
-  const SalaryDec = props.staffs
+  const salaryDec = props.staffs
     .sort((a, b) => {
       const fa = a.salaryScale * 3e6 + a.overTime * 2e5;
       const fb = b.salaryScale * 3e6 + b.overTime * 2e5;
@@ -108,9 +112,10 @@ function SalaryList(props) {
             value={option}
             onChange={(e) => setOption(e.target.value)}
           >
-            <option value="Tên (A đến Z)" selected>
-              Xếp theo: Tên (A đến Z)
+            <option value="ID" selected>
+              Xếp theo: ID
             </option>
+            <option value="Tên (A đến Z)">Tên (A đến Z)</option>
             <option value="Tên (Z đến A)">Tên (Z đến A)</option>
             <option value="Lương tăng dần">Lương tăng dần</option>
             <option value="Lương giảm dần">Lương giảm dần</option>
@@ -120,14 +125,14 @@ function SalaryList(props) {
       {/* <div className="row">{SalaryDec}</div> */}
       <div className="row">
         {option === "Tên (A đến Z)"
-          ? AscOrder
+          ? ascOrder
           : option === "Tên (Z đến A)"
-          ? DesOrder
+          ? desOrder
           : option === "Lương tăng dần"
-          ? SalaryInc
+          ? salaryInc
           : option === "Lương giảm dần"
-          ? SalaryDec
-          : AscOrder}
+          ? salaryDec
+          : salary}
       </div>
     </div>
   );
