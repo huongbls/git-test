@@ -14,13 +14,17 @@ function RenderStaffList({ staff }) {
 }
 
 function StaffList(props) {
-  const staffs = props.staffs.map((staff) => {
-    return (
-      <div key={staff.id} className="col-6 col-md-4 col-lg-2 p-3">
-        <RenderStaffList staff={staff} />
-      </div>
-    );
-  });
+  const staffs = props.staffs
+    .sort((a, b) => {
+      return a.id - b.id;
+    })
+    .map((staff) => {
+      return (
+        <div key={staff.id} className="col-6 col-md-4 col-lg-2 p-3">
+          <RenderStaffList staff={staff} />
+        </div>
+      );
+    });
 
   return (
     <div className="container p-3">
