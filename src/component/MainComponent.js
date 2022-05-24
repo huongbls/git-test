@@ -4,6 +4,7 @@ import Footer from "./FooterComponent";
 import StaffList from "./StaffListComponent";
 import StaffDetail from "./StaffDetailComponent";
 import DeparmentList from "./DepartmentComponent";
+import SalaryList from "./SalaryComponent";
 import { DEPARTMENTS, ROLE, STAFFS } from "../shared/staffs";
 import "../App.css";
 import { Switch, Route, Redirect } from "react-router-dom";
@@ -47,6 +48,11 @@ class Main extends Component {
             component={() => (
               <DeparmentList departments={this.state.departments} />
             )}
+          />
+          <Route
+            exact
+            path="/salary"
+            component={() => <SalaryList staffs={this.state.staffs} />}
           />
           <Redirect to="/staff" />
         </Switch>
