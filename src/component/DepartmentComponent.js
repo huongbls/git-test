@@ -4,7 +4,7 @@ import { Card, CardText, CardTitle } from "reactstrap";
 function RenderDepartment({ dep }) {
   return (
     <div>
-      <Card>
+      <Card className="bg-light text-dark">
         <CardTitle className="text-left p-1">{dep.name}</CardTitle>
         <CardText className="text-left p-3">
           Số lượng nhân viên: {dep.numberOfStaff}

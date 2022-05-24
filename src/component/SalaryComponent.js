@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 function RenderSalary({ staff }) {
   return (
     <div>
-      <Card className="p-3">
+      <Card className="p-3 bg-light text-dark">
         <CardTitle className="text-left">{staff.name}</CardTitle>
         <CardText className="text-left">Mã số nhân viên: {staff.id}</CardText>
         <CardText className="text-left">
@@ -20,7 +20,7 @@ function RenderSalary({ staff }) {
         <CardText className="text-left">
           Số ngày làm thêm: {staff.overTime}
         </CardText>
-        <CardText className="text-left">
+        <CardText className="text-center bg-secondary text-white p-1">
           Lương: {(staff.salaryScale * 3e6 + staff.overTime * 2e5).toFixed(0)}
         </CardText>
       </Card>
