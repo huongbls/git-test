@@ -1,5 +1,13 @@
-import React, { useState } from "react";
-import { Card, CardImg, CardTitle } from "reactstrap";
+import React, { useState, useRef } from "react";
+import {
+  Card,
+  CardImg,
+  CardTitle,
+  Form,
+  FormGroup,
+  Input,
+  Button,
+} from "reactstrap";
 import { Link } from "react-router-dom";
 
 function RenderStaffList({ staff }) {
@@ -26,13 +34,19 @@ function StaffList(props) {
       );
     });
 
-  const [searchValue, setSearch] = useState();
+  const [searchValue, setSearch] = useState("");
+
+  // const nameStaff = React.createRef();
+
+  const nameStaff = useRef(null);
+
+  const submitFormHandler = (event) => {
+    event.preventDefault();
+    setSearch(nameStaff.current.value.toUpperCase());
+  };
 
   const searchStaff = props.staffs
-    .filter((staff) =>
-      // staff.name.toUpperCase().includes(searchValue.toUpperCase())
-      staff.name.toUpperCase().includes(searchValue)
-    )
+    .filter((staff) => staff.name.toUpperCase().includes(searchValue))
     .map((staff) => {
       return (
         <div key={staff.id} className="col-6 col-md-4 col-lg-2 p-3">
@@ -48,14 +62,30 @@ function StaffList(props) {
           <h3 className="pl-3">Nhân Viên</h3>
         </div>
         <div>
-          <label>
-            <input
-              name="numberOfGuests"
-              placeholder="Search Name"
-              value={searchValue}
-              onChange={(e) => setSearch(e.target.value.toUpperCase())}
-            />
-          </label>
+          <Form onSubmit={submitFormHandler}>
+            <FormGroup className="d-inline-block pr-3">
+              <Input
+                type="text"
+                id="nameStaff"
+                name="nameStaff"
+                placeholder="Search Name"
+                defaultValue=""
+                // value={searchValue}
+                // onChange={(e) => setSearch(e.target.value.toUpperCase())}
+                innerRef={nameStaff}
+              />
+            </FormGroup>
+            <FormGroup className="d-inline-block">
+              <Button
+                type="submit"
+                value="submit"
+                color="primary"
+                className="mb-1"
+              >
+                Tìm
+              </Button>
+            </FormGroup>
+          </Form>
         </div>
       </div>
       <hr></hr>
