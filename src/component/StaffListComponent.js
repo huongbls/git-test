@@ -1,5 +1,3 @@
-"use strict";
-
 import React, { useState, useRef } from "react";
 import {
   Card,
@@ -13,13 +11,11 @@ import {
   ModalHeader,
   ModalBody,
   Col,
-  Row,
   Label,
-  Select,
-  Option,
   FormFeedback,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { DEPARTMENTS } from "../shared/staffs";
 
 function RenderStaffList({ staff }) {
   return (
@@ -31,13 +27,14 @@ function RenderStaffList({ staff }) {
     </Card>
   );
 }
-function AddStaff() {
+
+function AddStaff(props) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [allValues, setAllValues] = useState({
     fullname: "",
     dateofbirth: "",
     startdate: "",
-    department: "Sales",
+    department: "Sale",
     salaryscale: "1",
     annualleave: "0",
     overtime: "0",
@@ -93,8 +90,37 @@ function AddStaff() {
       [event.target.name]: event.target.value,
     });
   };
+
+  const [staffArr, setStaffArr] = useState(props.staffs);
+  const [newId, setNewId] = useState(staffArr.length);
+
   const handleSubmit = (event) => {
-    // alert("Current State is: " + JSON.stringify(allValues));
+    setNewId(newId + 1);
+    const newStaff = {
+      id: newId,
+      name: allValues.fullname,
+      doB: allValues.dateofbirth,
+      salaryScale: allValues.salaryscale,
+      startDate: allValues.startdate,
+      department:
+        allValues.department === "Sale"
+          ? DEPARTMENTS[0]
+          : allValues.department === "HR"
+          ? DEPARTMENTS[1]
+          : allValues.department === "Marketing"
+          ? DEPARTMENTS[2]
+          : allValues.department === "IT"
+          ? DEPARTMENTS[3]
+          : DEPARTMENTS[4],
+      annualLeave: allValues.annualleave,
+      overTime: allValues.overtime,
+      image: "/assets/images/alberto.png",
+    };
+
+    setStaffArr(staffArr.push(newStaff));
+    localStorage.setItem("newStaff", JSON.stringify(newStaff));
+    localStorage.setItem("staffs", JSON.stringify(staffArr));
+
     if (
       errors.fullname !== "" ||
       errors.dateofbirth !== "" ||
@@ -201,7 +227,7 @@ function AddStaff() {
               value={allValues.department}
               onChange={handleInputChange}
             >
-              <option>Sales</option>
+              <option>Sale</option>
               <option>HR</option>
               <option>Marketing</option>
               <option>IT</option>
@@ -303,7 +329,6 @@ function StaffList(props) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   // const nameStaff = React.createRef();
-
   const nameStaff = useRef(null);
 
   const submitFormHandler = (event) => {
@@ -382,7 +407,7 @@ function StaffList(props) {
           Thêm nhân viên
         </ModalHeader>
         <ModalBody>
-          <AddStaff />
+          <AddStaff staffs={props.staffs} />
         </ModalBody>
       </Modal>
     </div>

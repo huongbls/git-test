@@ -7,7 +7,13 @@ function RenderDepartment({ dep }) {
       <Card className="bg-light text-dark">
         <CardTitle className="text-left p-1">{dep.name}</CardTitle>
         <CardText className="text-left p-3">
-          Số lượng nhân viên: {dep.numberOfStaff}
+          {/* Số lượng nhân viên: {dep.numberOfStaff} */}
+          Số lượng nhân viên:{" "}
+          {localStorage.staffs
+            ? JSON.parse(localStorage.getItem("staffs")).filter(
+                (x) => x.department.name === dep.name
+              ).length
+            : dep.numberOfStaff}
         </CardText>
       </Card>
     </div>
