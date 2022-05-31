@@ -24,23 +24,18 @@ const maxLength = (len) => (val) => !val || val.length <= len;
 const minLength = (len) => (val) => val && val.length >= len;
 const isNumber = (val) => !isNaN(Number(val));
 
-function CommentForm() {
-  const [modalIsOpen, setModalIsOpen] = useState(true);
-
+function CommentForm(props) {
   const handleSubmit = (values) => {
-    console.log("Current State is: " + JSON.stringify(values));
-    alert("Current State is: " + JSON.stringify(values));
+    props.addComment(
+      props.dishId,
+      values.rating,
+      values.author,
+      values.comment
+    );
+    props.toggleModal();
   };
   return (
-    <LocalForm
-      onSubmit={(values) => handleSubmit(values)}
-      isOpen={modalIsOpen}
-      toggle={() => {
-        setModalIsOpen(!modalIsOpen);
-        // toggle={() => {
-        //   setModalIsOpen(false);
-      }}
-    >
+    <LocalForm onSubmit={(values) => handleSubmit(values)}>
       <Row className="form-group">
         <Col md={12}>
           <Label htmlFor="rating">Rating</Label>
@@ -132,16 +127,12 @@ function RenderDish({ dish }) {
     </div>
   );
 }
-function RenderComment({ comments }) {
+function RenderComment({ comments, addComment, dishId }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  // const setModalIsOpenToTrue = () => {
-  //   setModalIsOpen(true);
-  // };
-
-  // const setModalIsOpenToFalse = () => {
-  //   setModalIsOpen(false);
-  // };
+  const toggleModal = () => {
+    setModalIsOpen(!modalIsOpen);
+  };
 
   if (comments != null) {
     return (
@@ -170,23 +161,14 @@ function RenderComment({ comments }) {
           <span className="fa fa-pencil fa-lg"></span>
           Submit Comment
         </Button>
-        <Modal
-          isOpen={modalIsOpen}
-          toggle={() => {
-            setModalIsOpen(!modalIsOpen);
-          }}
-          // toggle={modalIsOpen ? setModalIsOpenToFalse : setModalIsOpenToTrue}
-        >
-          <ModalHeader
-            // toggle={modalIsOpen ? setModalIsOpenToFalse : setModalIsOpenToTrue}
-            toggle={() => {
-              setModalIsOpen(!modalIsOpen);
-            }}
-          >
-            Submit
-          </ModalHeader>
+        <Modal isOpen={modalIsOpen} toggle={toggleModal}>
+          <ModalHeader toggle={toggleModal}>Submit</ModalHeader>
           <ModalBody>
-            <CommentForm />
+            <CommentForm
+              dishId={dishId}
+              addComment={addComment}
+              toggleModal={toggleModal}
+            />
           </ModalBody>
         </Modal>
       </div>
@@ -213,7 +195,11 @@ const DishDetail = (props) => {
         </div>
         <div className="row">
           <RenderDish dish={props.dish} />
-          <RenderComment comments={props.comments} />
+          <RenderComment
+            comments={props.comments}
+            addComment={props.addComment}
+            dishId={props.dish.id}
+          />
         </div>
       </div>
     );
