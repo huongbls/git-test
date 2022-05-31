@@ -95,38 +95,39 @@ function AddStaff(props) {
   const [newId, setNewId] = useState(staffArr.length);
 
   const handleSubmit = (event) => {
-    setNewId(newId + 1);
-    const newStaff = {
-      id: newId,
-      name: allValues.fullname,
-      doB: allValues.dateofbirth,
-      salaryScale: allValues.salaryscale,
-      startDate: allValues.startdate,
-      department:
-        allValues.department === "Sale"
-          ? DEPARTMENTS[0]
-          : allValues.department === "HR"
-          ? DEPARTMENTS[1]
-          : allValues.department === "Marketing"
-          ? DEPARTMENTS[2]
-          : allValues.department === "IT"
-          ? DEPARTMENTS[3]
-          : DEPARTMENTS[4],
-      annualLeave: allValues.annualleave,
-      overTime: allValues.overtime,
-      image: "/assets/images/alberto.png",
-    };
-
-    setStaffArr(staffArr.push(newStaff));
-    localStorage.setItem("newStaff", JSON.stringify(newStaff));
-    localStorage.setItem("staffs", JSON.stringify(staffArr));
-
     if (
-      errors.fullname !== "" ||
-      errors.dateofbirth !== "" ||
-      errors.startdate !== ""
-    )
+      errors.fullname === "" &&
+      errors.dateofbirth === "" &&
+      errors.startdate === ""
+    ) {
+      setNewId(newId + 1);
+      const newStaff = {
+        id: newId,
+        name: allValues.fullname,
+        doB: allValues.dateofbirth,
+        salaryScale: allValues.salaryscale,
+        startDate: allValues.startdate,
+        department:
+          allValues.department === "Sale"
+            ? DEPARTMENTS[0]
+            : allValues.department === "HR"
+            ? DEPARTMENTS[1]
+            : allValues.department === "Marketing"
+            ? DEPARTMENTS[2]
+            : allValues.department === "IT"
+            ? DEPARTMENTS[3]
+            : DEPARTMENTS[4],
+        annualLeave: allValues.annualleave,
+        overTime: allValues.overtime,
+        image: "/assets/images/alberto.png",
+      };
+
+      setStaffArr(staffArr.push(newStaff));
+      localStorage.setItem("newStaff", JSON.stringify(newStaff));
+      localStorage.setItem("staffs", JSON.stringify(staffArr));
+    } else {
       event.preventDefault();
+    }
   };
 
   const handleBlur = (field) => (event) => {
@@ -134,11 +135,7 @@ function AddStaff(props) {
   };
 
   return (
-    <Form
-      onSubmit={(values) => handleSubmit(values)}
-      isOpen={modalIsOpen}
-      toggle={() => setModalIsOpen(true)}
-    >
+    <Form onSubmit={(values) => handleSubmit(values)}>
       <FormGroup>
         <div className="form-group row">
           <Label
