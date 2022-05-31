@@ -1,7 +1,9 @@
 import { DEPARTMENTS, ROLE, STAFFS } from "../shared/staffs";
 
 export const initialState = {
-  staffs: STAFFS,
+  staffs: localStorage.staffs
+    ? JSON.parse(localStorage.getItem("staffs"))
+    : STAFFS,
   departments: DEPARTMENTS,
   role: ROLE,
 };

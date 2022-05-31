@@ -12,8 +12,9 @@ import {
   ModalBody,
   Col,
   Label,
-  FormFeedback,
+  Row,
 } from "reactstrap";
+import { Control, LocalForm, Errors } from "react-redux-form";
 import { Link } from "react-router-dom";
 import { DEPARTMENTS } from "../shared/staffs";
 
@@ -29,91 +30,29 @@ function RenderStaffList({ staff }) {
 }
 
 function AddStaff(props) {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [allValues, setAllValues] = useState({
-    fullname: "",
-    dateofbirth: "",
-    startdate: "",
-    department: "Sale",
-    salaryscale: "1",
-    annualleave: "0",
-    overtime: "0",
-  });
-
-  const [allTouched, setTouched] = useState({
-    touched: {
-      fullname: false,
-      dateofbirth: false,
-      startdate: false,
-    },
-  });
-
-  const [submitClick, setSubmitClick] = useState(0);
-
-  const buttonSubmitClick = (event) => {
-    setSubmitClick(submitClick + 1);
-  };
-
-  const validate = (fullname, dateofbirth, startdate) => {
-    const errors = {
-      fullname: "",
-      dateofbirth: "",
-      startdate: "",
-    };
-    if (allTouched.touched.fullname && fullname.length < 2)
-      errors.fullname = "Yêu cầu nhiều hơn 2 ký tự";
-    else if (allTouched.touched.fullname && fullname.length > 30)
-      errors.fullname = "Yêu cầu ít hơn 30 ký tự";
-    else if (submitClick && fullname === "") errors.fullname = "Yêu cầu nhập";
-
-    if (allTouched.touched.dateofbirth && dateofbirth === "")
-      errors.dateofbirth = "Yêu cầu nhập";
-    else if (submitClick && dateofbirth === "")
-      errors.dateofbirth = "Yêu cầu nhập";
-
-    if (allTouched.touched.startdate && startdate === "")
-      errors.startdate = "Yêu cầu nhập";
-    else if (submitClick && startdate === "") errors.startdate = "Yêu cầu nhập";
-
-    return errors;
-  };
-
-  const errors = validate(
-    allValues.fullname,
-    allValues.dateofbirth,
-    allValues.startdate
-  );
-
-  const handleInputChange = (event) => {
-    setAllValues({
-      ...allValues,
-      [event.target.name]: event.target.value,
-    });
-  };
-
   const [staffArr, setStaffArr] = useState(props.staffs);
   const [newId, setNewId] = useState(staffArr.length);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (values) => {
     setNewId(newId + 1);
     const newStaff = {
       id: newId,
-      name: allValues.fullname,
-      doB: allValues.dateofbirth,
-      salaryScale: allValues.salaryscale,
-      startDate: allValues.startdate,
+      name: values.fullname,
+      doB: values.dateofbirth,
+      salaryScale: values.salaryscale,
+      startDate: values.startdate,
       department:
-        allValues.department === "Sale"
+        values.department === "Sale"
           ? DEPARTMENTS[0]
-          : allValues.department === "HR"
+          : values.department === "HR"
           ? DEPARTMENTS[1]
-          : allValues.department === "Marketing"
+          : values.department === "Marketing"
           ? DEPARTMENTS[2]
-          : allValues.department === "IT"
+          : values.department === "IT"
           ? DEPARTMENTS[3]
           : DEPARTMENTS[4],
-      annualLeave: allValues.annualleave,
-      overTime: allValues.overtime,
+      annualLeave: values.annualleave,
+      overTime: values.overtime,
       image: "/assets/images/alberto.png",
     };
 
@@ -121,194 +60,196 @@ function AddStaff(props) {
     localStorage.setItem("newStaff", JSON.stringify(newStaff));
     localStorage.setItem("staffs", JSON.stringify(staffArr));
 
-    if (
-      errors.fullname !== "" ||
-      errors.dateofbirth !== "" ||
-      errors.startdate !== ""
-    )
-      event.preventDefault();
+    props.toggleModal();
   };
 
-  const handleBlur = (field) => (event) => {
-    setTouched({ touched: { ...allTouched.touched, [field]: true } });
-  };
+  const required = (val) => val && val.length;
+  const maxLength = (len) => (val) => !val || val.length <= len;
+  const minLength = (len) => (val) => val && val.length >= len;
 
   return (
-    <Form
-      onSubmit={(values) => handleSubmit(values)}
-      isOpen={modalIsOpen}
-      toggle={() => setModalIsOpen(true)}
-    >
-      <FormGroup>
-        <div className="form-group row">
-          <Label
-            htmlFor="fullname"
-            className="col-sm-12 col-md-4 col-form-label"
+    <LocalForm onSubmit={(values) => handleSubmit(values)}>
+      <Row className="form-group">
+        <Label htmlFor="fullname" className="col-sm-12 col-md-4 col-form-label">
+          Tên
+        </Label>
+        <Col className="col-sm-12 col-md-8">
+          <Control.text
+            model=".fullname"
+            id="fullname"
+            type="text"
+            name="fullname"
+            className="form-control"
+            placeholder="Họ và tên"
+            validators={{
+              required,
+              minLength: minLength(2),
+              maxLength: maxLength(30),
+            }}
+          />
+          <Errors
+            className="text-danger"
+            model=".fullname"
+            show={{ touched: true, focus: false }}
+            messages={{
+              required: "Yêu cầu nhập",
+            }}
+          />
+          <Errors
+            className="text-danger"
+            model=".fullname"
+            show="touched"
+            messages={{
+              minLength: "Yêu cầu nhiều hơn 2 ký tự",
+              maxLength: "Yêu cầu ít hơn 30 ký tự",
+            }}
+          />
+        </Col>
+      </Row>
+      <Row className="form-group">
+        <Label
+          htmlFor="dateofbirth"
+          className="col-sm-12 col-md-4 col-form-label"
+        >
+          Ngày Sinh
+        </Label>
+        <Col className="col-sm-12 col-md-8">
+          <Control.text
+            model=".dateofbirth"
+            type="date"
+            id="dateofbirth"
+            name="dateofbirth"
+            // value={this.state.dateofbirth}
+            className="form-control"
+            validators={{
+              required,
+            }}
+          />
+          <Errors
+            className="text-danger"
+            model=".dateofbirth"
+            show="touched"
+            messages={{
+              required: "Yêu cầu nhập",
+            }}
+          />
+        </Col>
+      </Row>
+      <Row className="form-group">
+        <Label
+          htmlFor="startdate"
+          className="col-sm-12 col-md-4 col-form-label"
+        >
+          Ngày vào công ty
+        </Label>
+        <Col className="col-sm-12 col-md-8">
+          <Control.text
+            model=".startdate"
+            type="date"
+            id="startdate"
+            // value={this.state.tenState}
+            name="startdate"
+            className="form-control"
+            validators={{
+              required,
+            }}
+          />
+          <Errors
+            className="text-danger"
+            model=".startdate"
+            show="touched"
+            messages={{
+              required: "Yêu cầu nhập",
+            }}
+          />
+        </Col>
+      </Row>
+      <Row className="form-group">
+        <Label
+          htmlFor="department"
+          className="col-sm-12 col-md-4 col-form-label"
+        >
+          Phòng Ban
+        </Label>
+        <Col className="col-sm-12 col-md-8">
+          <Control.select
+            model=".department"
+            type="select"
+            name="department"
+            className="form-control"
+            defaultValue="Sale"
           >
-            Tên
-          </Label>
-          <div className="col-sm-12 col-md-8">
-            <Input
-              type="text"
-              id="fullname"
-              name="fullname"
-              className="form-control"
-              placeholder="Họ và tên"
-              value={allValues.fullname}
-              // valid={errors.fullname === ""}
-              invalid={errors.fullname !== ""}
-              onBlur={handleBlur("fullname")}
-              onChange={handleInputChange}
-            />
-            <FormFeedback>{errors.fullname}</FormFeedback>
-          </div>
-        </div>
-      </FormGroup>
-      <FormGroup>
-        <div className="form-group row">
-          <Label
-            htmlFor="dateofbirth"
-            className="col-sm-12 col-md-4 col-form-label"
-          >
-            Ngày Sinh
-          </Label>
-          <div className="col-sm-12 col-md-8">
-            <Input
-              type="date"
-              id="dateofbirth"
-              name="dateofbirth"
-              value={allValues.dateofbirth}
-              className="form-control"
-              // valid={errors.dateofbirth === ""}
-              invalid={errors.dateofbirth !== ""}
-              onBlur={handleBlur("dateofbirth")}
-              onChange={handleInputChange}
-            />
-            <FormFeedback>{errors.dateofbirth}</FormFeedback>
-          </div>
-        </div>
-      </FormGroup>
-      <FormGroup>
-        <div className="form-group row">
-          <Label
-            htmlFor="startdate"
-            className="col-sm-12 col-md-4 col-form-label"
-          >
-            Ngày vào công ty
-          </Label>
-          <div className="col-sm-12 col-md-8">
-            <Input
-              type="date"
-              id="startdate"
-              name="startdate"
-              value={allValues.startdate}
-              className="form-control"
-              // valid={errors.startdate === ""}
-              invalid={errors.startdate !== ""}
-              onBlur={handleBlur("startdate")}
-              onChange={handleInputChange}
-            />
-            <FormFeedback>{errors.startdate}</FormFeedback>
-          </div>
-        </div>
-      </FormGroup>
-      <FormGroup>
-        <div className="form-group row">
-          <Label
-            htmlFor="department"
-            className="col-sm-12 col-md-4 col-form-label"
-          >
-            Phòng Ban
-          </Label>
-          <div className="col-sm-12 col-md-8">
-            <Input
-              type="select"
-              name="department"
-              value={allValues.department}
-              onChange={handleInputChange}
-            >
-              <option>Sale</option>
-              <option>HR</option>
-              <option>Marketing</option>
-              <option>IT</option>
-              <option>Finance</option>
-            </Input>
-          </div>
-        </div>
-      </FormGroup>
-      <FormGroup>
-        <div className="form-group row">
-          <Label
-            htmlFor="salaryscale"
-            className="col-sm-12 col-md-4 col-form-label"
-          >
-            Hệ số lương
-          </Label>
-          <div className="col-sm-12 col-md-8">
-            <Input
-              type="number"
-              id="salaryscale"
-              name="salaryscale"
-              min="0"
-              value={allValues.salaryscale}
-              onChange={handleInputChange}
-            />
-          </div>
-        </div>
-      </FormGroup>
-      <FormGroup>
-        <div className="form-group row">
-          <Label
-            htmlFor="annualleave"
-            className="col-sm-12 col-md-4 col-form-label"
-          >
-            Số ngày nghỉ còn lại
-          </Label>
-          <div className="col-sm-12 col-md-8">
-            <Input
-              type="number"
-              id="annualleave"
-              name="annualleave"
-              min="0"
-              value={allValues.annualleave}
-              onChange={handleInputChange}
-            />
-          </div>
-        </div>
-      </FormGroup>
-      <FormGroup>
-        <div className="form-group row">
-          <Label
-            htmlFor="overtime"
-            className="col-sm-12 col-md-4 col-form-label"
-          >
-            Số ngày đã làm thêm
-          </Label>
-          <div className="col-sm-12 col-md-8">
-            <Input
-              type="number"
-              id="overtime"
-              name="overtime"
-              min="0"
-              value={allValues.overtime}
-              onChange={handleInputChange}
-            />
-          </div>
-        </div>
-      </FormGroup>
-      <FormGroup>
-        <Col md={10}>
-          <Button
-            type="submit"
-            color="primary"
-            name="submit"
-            onClick={buttonSubmitClick}
-          >
+            <option>Sale</option>
+            <option>HR</option>
+            <option>Marketing</option>
+            <option>IT</option>
+            <option>Finance</option>
+          </Control.select>
+        </Col>
+      </Row>
+      <Row className="form-group">
+        <Label
+          htmlFor="salaryscale"
+          className="col-sm-12 col-md-4 col-form-label"
+        >
+          Hệ số lương
+        </Label>
+        <Col className="col-sm-12 col-md-8">
+          <Control.text
+            model=".salaryscale"
+            type="number"
+            id="salaryscale"
+            name="salaryscale"
+            className="form-control"
+            defaultValue="1"
+            min="0"
+          />
+        </Col>
+      </Row>
+
+      <Row className="form-group">
+        <Label
+          htmlFor="annualleave"
+          className="col-sm-12 col-md-4 col-form-label"
+        >
+          Số ngày nghỉ còn lại
+        </Label>
+        <Col className="col-sm-12 col-md-8">
+          <Control.text
+            model=".annualleave"
+            type="number"
+            id="annualleave"
+            name="annualleave"
+            className="form-control"
+            defaultValue="0"
+            min="0"
+          />
+        </Col>
+      </Row>
+      <Row className="form-group">
+        <Label htmlFor="overtime" className="col-sm-12 col-md-4 col-form-label">
+          Số ngày đã làm thêm
+        </Label>
+        <Col className="col-sm-12 col-md-8">
+          <Control.text
+            model=".overtime"
+            type="number"
+            id="overtime"
+            name="overtime"
+            className="form-control"
+            min="0"
+            defaultValue="0"
+          />
+        </Col>
+      </Row>
+      <Row className="form-group">
+        <Col md={{ size: 10, offset: 0 }}>
+          <Button type="submit" color="primary">
             Thêm
           </Button>
         </Col>
-      </FormGroup>
-    </Form>
+      </Row>
+    </LocalForm>
   );
 }
 
@@ -324,6 +265,10 @@ function StaffList(props) {
         </div>
       );
     });
+
+  const toggleModal = () => {
+    setModalIsOpen(!modalIsOpen);
+  };
 
   const [searchValue, setSearch] = useState("");
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -407,7 +352,7 @@ function StaffList(props) {
           Thêm nhân viên
         </ModalHeader>
         <ModalBody>
-          <AddStaff staffs={props.staffs} />
+          <AddStaff staffs={props.staffs} toggleModal={toggleModal} />
         </ModalBody>
       </Modal>
     </div>

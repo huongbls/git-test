@@ -5,7 +5,7 @@ import StaffList from "./StaffListComponent";
 import StaffDetail from "./StaffDetailComponent";
 import DeparmentList from "./DepartmentComponent";
 import SalaryList from "./SalaryComponent";
-import { DEPARTMENTS, ROLE, STAFFS } from "../shared/staffs";
+// import { DEPARTMENTS, ROLE, STAFFS } from "../shared/staffs";
 import "../App.css";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
@@ -21,13 +21,13 @@ const mapStateToProps = (state) => {
 class Main extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      staffs: localStorage.staffs
-        ? JSON.parse(localStorage.getItem("staffs"))
-        : STAFFS,
-      departments: DEPARTMENTS,
-      role: ROLE,
-    };
+    // this.state = {
+    //   staffs: localStorage.staffs
+    //     ? JSON.parse(localStorage.getItem("staffs"))
+    //     : STAFFS,
+    //   departments: DEPARTMENTS,
+    //   role: ROLE,
+    // };
   }
 
   render() {
