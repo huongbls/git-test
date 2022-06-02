@@ -18,7 +18,7 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
   return fetch(baseUrl + "comments", {
     method: "POST",
     body: JSON.stringify(newComment),
-    header: {
+    headers: {
       "Content-Type": "application/json",
     },
     credentials: "same-origin",
