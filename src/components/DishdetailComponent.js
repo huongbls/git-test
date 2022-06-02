@@ -28,7 +28,7 @@ const isNumber = (val) => !isNaN(Number(val));
 
 function CommentForm(props) {
   const handleSubmit = (values) => {
-    props.addComment(
+    props.postComment(
       props.dishId,
       values.rating,
       values.author,
@@ -135,7 +135,7 @@ function RenderDish({ dish }) {
     </div>
   );
 }
-function RenderComment({ comments, addComment, dishId }) {
+function RenderComment({ comments, postComment, dishId }) {
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const toggleModal = () => {
@@ -174,7 +174,7 @@ function RenderComment({ comments, addComment, dishId }) {
           <ModalBody>
             <CommentForm
               dishId={dishId}
-              addComment={addComment}
+              postComment={postComment}
               toggleModal={toggleModal}
             />
           </ModalBody>
@@ -219,7 +219,7 @@ const DishDetail = (props) => {
           <RenderDish dish={props.dish} />
           <RenderComment
             comments={props.comments}
-            addComment={props.addComment}
+            postComment={props.postComment}
             dishId={props.dish.id}
           />
         </div>
