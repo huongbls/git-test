@@ -9,22 +9,29 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { Loading } from "./LoadingComponent";
+import { baseUrl } from "../shared/baseUrl";
+import { FadeTransform, Fade, Stagger } from "react-animation-components";
 
 function RenderLeader({ leader }) {
   return (
     <Media className="p-3">
-      <div className="row">
-        <div className="col-2">
-          <div>
-            <img src={leader.image} />
+      <Stagger in>
+        <FadeTransform
+          in
+          transformProps={{ exitTransform: "scale(0.5) translateY(50%)" }}
+        >
+          <div className="row">
+            <div className="col-sm-4 col-md-2 pl-0">
+              <img src={baseUrl + leader.image} alt={leader.name} />
+            </div>
+            <div className="col-sm-8 col-md-10">
+              <h4>{leader.name}</h4>
+              <p>{leader.designation}</p>
+              <p>{leader.description}</p>
+            </div>
           </div>
-        </div>
-        <div className="col-10">
-          <h4>{leader.name}</h4>
-          <p>{leader.designation}</p>
-          <p>{leader.description}</p>
-        </div>
-      </div>
+        </FadeTransform>
+      </Stagger>
     </Media>
   );
 }
