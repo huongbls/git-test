@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Card, CardImg, Breadcrumb, BreadcrumbItem } from "reactstrap";
 import dateFormat from "dateformat";
 import { Link } from "react-router-dom";
+import { Loading } from "./LoadingComponent";
 
 function RenderStaffImg({ staff }) {
   return (
@@ -24,7 +25,18 @@ function RenderStaffInfo({ staff }) {
         <h4>Họ và tên: {staff.name}</h4>
         <p>Ngày sinh: {dateFormat(staff.doB, "dd/mm/yyyy")}</p>
         <p>Ngày vào công ty: {dateFormat(staff.startDate, "dd/mm/yyyy")}</p>
-        <p>Phòng ban: {staff.department.name}</p>
+        <p>
+          Phòng ban:{" "}
+          {staff.departmentId === "Dept01"
+            ? "Sale"
+            : staff.departmentId === "Dept02"
+            ? "HR"
+            : staff.departmentId === "Dept03"
+            ? "Marketing"
+            : staff.departmentId === "Dept04"
+            ? "IT"
+            : "Finance"}
+        </p>
         <p>Số ngày nghỉ còn lại: {staff.annualLeave}</p>
         <p>Số ngày nghỉ làm thêm: {staff.overTime}</p>
       </div>
@@ -34,7 +46,23 @@ function RenderStaffInfo({ staff }) {
   }
 }
 const StaffDetail = (props) => {
-  if (props.staff != null) {
+  if (props.isLoading) {
+    return (
+      <div className="container">
+        <div className="row">
+          <Loading />
+        </div>
+      </div>
+    );
+  } else if (props.errMess) {
+    return (
+      <div className="container">
+        <div className="row">
+          <h4>{props.errMess}</h4>
+        </div>
+      </div>
+    );
+  } else if (props.staff != null) {
     return (
       <div className="container">
         <div className="row">
@@ -52,7 +80,7 @@ const StaffDetail = (props) => {
       </div>
     );
   } else {
-    return <div></div>;
+    return <div>Hello</div>;
   }
 };
 

@@ -7,6 +7,7 @@ import {
   BreadcrumbItem,
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { Loading } from "./LoadingComponent";
 
 function RenderSalary({ staff }) {
   return (
@@ -29,7 +30,7 @@ function RenderSalary({ staff }) {
 }
 
 function SalaryList(props) {
-  const salary = props.staffs
+  const salary = props.staffs.staffs
     .sort((a, b) => {
       return a.id - b.id;
     })
@@ -43,7 +44,7 @@ function SalaryList(props) {
 
   const [option, setOption] = useState();
 
-  const ascOrder = props.staffs
+  const ascOrder = props.staffs.staffs
     .sort((a, b) => {
       return a.name.localeCompare(b.name);
     })
@@ -55,7 +56,7 @@ function SalaryList(props) {
       );
     });
 
-  const desOrder = props.staffs
+  const desOrder = props.staffs.staffs
     .sort((a, b) => {
       return b.name.localeCompare(a.name);
     })
@@ -67,7 +68,7 @@ function SalaryList(props) {
       );
     });
 
-  const salaryInc = props.staffs
+  const salaryInc = props.staffs.staffs
     .sort((a, b) => {
       const fa = a.salaryScale * 3e6 + a.overTime * 2e5;
       const fb = b.salaryScale * 3e6 + b.overTime * 2e5;
@@ -81,7 +82,7 @@ function SalaryList(props) {
       );
     });
 
-  const salaryDec = props.staffs
+  const salaryDec = props.staffs.staffs
     .sort((a, b) => {
       const fa = a.salaryScale * 3e6 + a.overTime * 2e5;
       const fb = b.salaryScale * 3e6 + b.overTime * 2e5;
@@ -95,47 +96,62 @@ function SalaryList(props) {
       );
     });
 
-  return (
-    <div className="container p-3">
-      <div className="row justify-content-between">
-        <div>
-          <Breadcrumb>
-            <BreadcrumbItem>
-              <Link to="/staff">Nhân Viên</Link>
-            </BreadcrumbItem>
-            <BreadcrumbItem active>Bảng Lương</BreadcrumbItem>
-          </Breadcrumb>
-        </div>
-        <div>
-          <select
-            className="form-control"
-            value={option}
-            onChange={(e) => setOption(e.target.value)}
-          >
-            <option value="ID" selected>
-              Xếp theo: ID
-            </option>
-            <option value="Tên (A đến Z)">Tên (A đến Z)</option>
-            <option value="Tên (Z đến A)">Tên (Z đến A)</option>
-            <option value="Lương tăng dần">Lương tăng dần</option>
-            <option value="Lương giảm dần">Lương giảm dần</option>
-          </select>
+  if (props.staffs.isLoading) {
+    return (
+      <div className="container">
+        <div className="row">
+          <Loading />
         </div>
       </div>
-      {/* <div className="row">{SalaryDec}</div> */}
+    );
+  } else if (props.staffs.errMess) {
+    <div className="container">
       <div className="row">
-        {option === "Tên (A đến Z)"
-          ? ascOrder
-          : option === "Tên (Z đến A)"
-          ? desOrder
-          : option === "Lương tăng dần"
-          ? salaryInc
-          : option === "Lương giảm dần"
-          ? salaryDec
-          : salary}
+        <h4>{props.staffs.errMess}</h4>
       </div>
-    </div>
-  );
+    </div>;
+  } else {
+    return (
+      <div className="container p-3">
+        <div className="row justify-content-between">
+          <div>
+            <Breadcrumb>
+              <BreadcrumbItem>
+                <Link to="/staff">Nhân Viên</Link>
+              </BreadcrumbItem>
+              <BreadcrumbItem active>Bảng Lương</BreadcrumbItem>
+            </Breadcrumb>
+          </div>
+          <div>
+            <select
+              className="form-control"
+              value={option}
+              onChange={(e) => setOption(e.target.value)}
+              defaultValue="ID"
+            >
+              <option value="ID">Xếp theo: ID</option>
+              <option value="Tên (A đến Z)">Tên (A đến Z)</option>
+              <option value="Tên (Z đến A)">Tên (Z đến A)</option>
+              <option value="Lương tăng dần">Lương tăng dần</option>
+              <option value="Lương giảm dần">Lương giảm dần</option>
+            </select>
+          </div>
+        </div>
+        {/* <div className="row">{SalaryDec}</div> */}
+        <div className="row">
+          {option === "Tên (A đến Z)"
+            ? ascOrder
+            : option === "Tên (Z đến A)"
+            ? desOrder
+            : option === "Lương tăng dần"
+            ? salaryInc
+            : option === "Lương giảm dần"
+            ? salaryDec
+            : salary}
+        </div>
+      </div>
+    );
+  }
 }
 
 export default SalaryList;

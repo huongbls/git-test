@@ -16,7 +16,8 @@ import {
 } from "reactstrap";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import { Link } from "react-router-dom";
-import { DEPARTMENTS } from "../shared/staffs";
+import { DEPARTMENTS } from "../shared/departments";
+import { Loading } from "./LoadingComponent";
 
 function RenderStaffList({ staff }) {
   return (
@@ -254,7 +255,7 @@ function AddStaff(props) {
 }
 
 function StaffList(props) {
-  const staffs = props.staffs
+  const staffs = props.staffs.staffs
     .sort((a, b) => {
       return a.id - b.id;
     })
@@ -281,7 +282,7 @@ function StaffList(props) {
     setSearch(nameStaff.current.value.toUpperCase());
   };
 
-  const searchStaff = props.staffs
+  const searchStaff = props.staffs.staffs
     .filter((staff) => staff.name.toUpperCase().includes(searchValue))
     .map((staff) => {
       return (
@@ -291,72 +292,88 @@ function StaffList(props) {
       );
     });
 
-  return (
-    <div className="container p-3">
-      <div className="row justify-content-between">
-        <div>
-          <h3 className="pl-3">Nhân Viên</h3>
-        </div>
-        <div>
-          <Button
-            type="submit"
-            className="bg-dark text-white"
-            onClick={() => {
-              setModalIsOpen(true);
-            }}
-          >
-            <span className="fa fa-plus fa-2xl"></span>
-          </Button>
-        </div>
-        <div>
-          <Form onSubmit={submitFormHandler}>
-            <FormGroup className="d-inline-block pr-3">
-              <Input
-                type="text"
-                id="nameStaff"
-                name="nameStaff"
-                placeholder="Search Name"
-                defaultValue=""
-                // value={searchValue}
-                // onChange={(e) => setSearch(e.target.value.toUpperCase())}
-                innerRef={nameStaff}
-              />
-            </FormGroup>
-            <FormGroup className="d-inline-block">
-              <Button
-                type="submit"
-                value="submit"
-                color="primary"
-                className="mb-1"
-              >
-                Tìm
-              </Button>
-            </FormGroup>
-          </Form>
+  if (props.staffs.isLoading) {
+    return (
+      <div className="container">
+        <div className="row">
+          <Loading />
         </div>
       </div>
-      <hr></hr>
-      <div className="row">{searchValue ? searchStaff : staffs}</div>
+    );
+  } else if (props.staffs.errMess) {
+    <div className="container">
+      <div className="row">
+        <h4>{props.staffs.errMess}</h4>
+      </div>
+    </div>;
+  } else {
+    return (
+      <div className="container p-3">
+        <div className="row justify-content-between">
+          <div>
+            <h3 className="pl-3">Nhân Viên</h3>
+          </div>
+          <div>
+            <Button
+              type="submit"
+              className="bg-dark text-white"
+              onClick={() => {
+                setModalIsOpen(true);
+              }}
+            >
+              <span className="fa fa-plus fa-2xl"></span>
+            </Button>
+          </div>
+          <div>
+            <Form onSubmit={submitFormHandler}>
+              <FormGroup className="d-inline-block pr-3">
+                <Input
+                  type="text"
+                  id="nameStaff"
+                  name="nameStaff"
+                  placeholder="Search Name"
+                  defaultValue=""
+                  // value={searchValue}
+                  // onChange={(e) => setSearch(e.target.value.toUpperCase())}
+                  innerRef={nameStaff}
+                />
+              </FormGroup>
+              <FormGroup className="d-inline-block">
+                <Button
+                  type="submit"
+                  value="submit"
+                  color="primary"
+                  className="mb-1"
+                >
+                  Tìm
+                </Button>
+              </FormGroup>
+            </Form>
+          </div>
+        </div>
+        <hr></hr>
+        <div className="row">{searchValue ? searchStaff : staffs}</div>
 
-      <Modal
-        isOpen={modalIsOpen}
-        toggle={() => {
-          setModalIsOpen(!modalIsOpen);
-        }}
-      >
-        <ModalHeader
+        <Modal
+          isOpen={modalIsOpen}
           toggle={() => {
             setModalIsOpen(!modalIsOpen);
           }}
         >
-          Thêm nhân viên
-        </ModalHeader>
-        <ModalBody>
-          <AddStaff staffs={props.staffs} toggleModal={toggleModal} />
-        </ModalBody>
-      </Modal>
-    </div>
-  );
+          <ModalHeader
+            toggle={() => {
+              setModalIsOpen(!modalIsOpen);
+            }}
+          >
+            Thêm nhân viên
+          </ModalHeader>
+          <ModalBody>
+            <AddStaff staffs={props.staffs} toggleModal={toggleModal} />
+          </ModalBody>
+        </Modal>
+      </div>
+    );
+  }
 }
 
 export default StaffList;

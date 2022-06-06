@@ -5,10 +5,15 @@ import StaffList from "./StaffListComponent";
 import StaffDetail from "./StaffDetailComponent";
 import DeparmentList from "./DepartmentComponent";
 import SalaryList from "./SalaryComponent";
-// import { DEPARTMENTS, ROLE, STAFFS } from "../shared/staffs";
 import "../App.css";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
+import {
+  addStaff,
+  fetchStaffs,
+  fetchDepartments,
+  fetchStaffsSalary,
+} from "../redux/ActionCreators";
 
 const mapStateToProps = (state) => {
   return {
@@ -17,6 +22,18 @@ const mapStateToProps = (state) => {
     role: state.role,
   };
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchStaffs: () => {
+    dispatch(fetchStaffs());
+  },
+  fetchDepartments: () => {
+    dispatch(fetchDepartments());
+  },
+  fetchStaffsSalary: () => {
+    dispatch(fetchStaffsSalary());
+  },
+});
 
 class Main extends Component {
   constructor(props) {
@@ -30,15 +47,23 @@ class Main extends Component {
     // };
   }
 
+  componentDidMount() {
+    this.props.fetchStaffs();
+    this.props.fetchDepartments();
+    this.props.fetchStaffsSalary();
+  }
+
   render() {
     const StaffWithId = ({ match }) => {
       return (
         <StaffDetail
           staff={
-            this.props.staffs.filter(
+            this.props.staffs.staffs.filter(
               (staff) => staff.id === parseInt(match.params.staffId, 10)
             )[0]
           }
+          isLoading={this.props.staffs.isLoading}
+          errMess={this.props.staffs.errMess}
         />
       );
     };
@@ -73,4 +98,4 @@ class Main extends Component {
   }
 }
 
-export default withRouter(connect(mapStateToProps)(Main));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
