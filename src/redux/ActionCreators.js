@@ -1,14 +1,29 @@
 import * as ActionTypes from "./ActionTypes";
 import { baseUrl } from "../shared/baseUrl";
-import { STAFFS } from "../shared/staffs";
-import { DEPARTMENTS } from "../shared/departments";
-import { STAFFSSALARY } from "../shared/staffsSalary";
 
 export const fetchStaffs = () => (dispatch) => {
   dispatch(staffsLoading(true));
-  setTimeout(() => {
-    dispatch(addStaffs(STAFFS));
-  }, 2000);
+  return fetch(baseUrl + "staffs")
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error(
+            "Error" + response.status + ": " + response.statusText
+          );
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        var errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
+    .then((res) => res.json())
+    .then((staffs) => dispatch(addStaffs(staffs)))
+    .catch((error) => dispatch(staffsFailed(error.message)));
 };
 
 export const staffsLoading = () => ({
@@ -27,9 +42,27 @@ export const addStaffs = (staffs) => ({
 
 export const fetchDepartments = () => (dispatch) => {
   dispatch(departmentsLoading(true));
-  setTimeout(() => {
-    dispatch(addDepartments(DEPARTMENTS));
-  }, 2000);
+  return fetch(baseUrl + "departments")
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error(
+            "Error" + response.status + ": " + response.statusText
+          );
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        var errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
+    .then((res) => res.json())
+    .then((departments) => dispatch(addDepartments(departments)))
+    .catch((error) => dispatch(departmentsFailed(error.message)));
 };
 
 export const departmentsLoading = () => ({
@@ -48,9 +81,27 @@ export const addDepartments = (departments) => ({
 
 export const fetchStaffsSalary = () => (dispatch) => {
   dispatch(staffsSalaryLoading(true));
-  setTimeout(() => {
-    dispatch(addStaffsSalary(STAFFSSALARY));
-  }, 2000);
+  return fetch(baseUrl + "staffsSalary")
+    .then(
+      (response) => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error(
+            "Error" + response.status + ": " + response.statusText
+          );
+          error.response = response;
+          throw error;
+        }
+      },
+      (error) => {
+        var errmess = new Error(error.message);
+        throw errmess;
+      }
+    )
+    .then((res) => res.json())
+    .then((staffsSalary) => dispatch(addStaffsSalary(staffsSalary)))
+    .catch((error) => dispatch(staffsSalaryFailed(error.message)));
 };
 
 export const staffsSalaryLoading = () => ({

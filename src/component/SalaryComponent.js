@@ -30,7 +30,7 @@ function RenderSalary({ staff }) {
 }
 
 function SalaryList(props) {
-  const salary = props.staffs.staffs
+  const salary = props.staffsSalary.staffsSalary
     .sort((a, b) => {
       return a.id - b.id;
     })
@@ -44,7 +44,7 @@ function SalaryList(props) {
 
   const [option, setOption] = useState();
 
-  const ascOrder = props.staffs.staffs
+  const ascOrder = props.staffsSalary.staffsSalary
     .sort((a, b) => {
       return a.name.localeCompare(b.name);
     })
@@ -56,7 +56,7 @@ function SalaryList(props) {
       );
     });
 
-  const desOrder = props.staffs.staffs
+  const desOrder = props.staffsSalary.staffsSalary
     .sort((a, b) => {
       return b.name.localeCompare(a.name);
     })
@@ -68,7 +68,7 @@ function SalaryList(props) {
       );
     });
 
-  const salaryInc = props.staffs.staffs
+  const salaryInc = props.staffsSalary.staffsSalary
     .sort((a, b) => {
       const fa = a.salaryScale * 3e6 + a.overTime * 2e5;
       const fb = b.salaryScale * 3e6 + b.overTime * 2e5;
@@ -82,7 +82,7 @@ function SalaryList(props) {
       );
     });
 
-  const salaryDec = props.staffs.staffs
+  const salaryDec = props.staffsSalary.staffsSalary
     .sort((a, b) => {
       const fa = a.salaryScale * 3e6 + a.overTime * 2e5;
       const fb = b.salaryScale * 3e6 + b.overTime * 2e5;
@@ -96,7 +96,7 @@ function SalaryList(props) {
       );
     });
 
-  if (props.staffs.isLoading) {
+  if (props.staffsSalary.isLoading) {
     return (
       <div className="container">
         <div className="row">
@@ -104,10 +104,10 @@ function SalaryList(props) {
         </div>
       </div>
     );
-  } else if (props.staffs.errMess) {
+  } else if (props.staffsSalary.errMess) {
     <div className="container">
       <div className="row">
-        <h4>{props.staffs.errMess}</h4>
+        <h4>{props.staffsSalary.errMess}</h4>
       </div>
     </div>;
   } else {

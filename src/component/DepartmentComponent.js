@@ -1,21 +1,24 @@
 import React from "react";
 import { Card, CardText, CardTitle } from "reactstrap";
 import { Loading } from "./LoadingComponent";
+import { Link } from "react-router-dom";
 
 function RenderDepartment({ dep }) {
   return (
     <div>
       <Card className="bg-light text-dark">
-        <CardTitle className="text-left p-1">{dep.name}</CardTitle>
-        <CardText className="text-left p-3">
-          Số lượng nhân viên: {dep.numberOfStaff}
-          {/* Số lượng nhân viên:{" "}
+        <Link to={`/department/${dep.id}`}>
+          <CardTitle className="text-left p-1">{dep.name}</CardTitle>
+          <CardText className="text-left p-3">
+            Số lượng nhân viên: {dep.numberOfStaff}
+            {/* Số lượng nhân viên:{" "}
           {localStorage.staffs
             ? JSON.parse(localStorage.getItem("staffs")).filter(
                 (x) => x.department.name === dep.name
               ).length
             : dep.numberOfStaff} */}
-        </CardText>
+          </CardText>
+        </Link>
       </Card>
     </div>
   );

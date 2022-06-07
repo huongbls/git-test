@@ -80,7 +80,7 @@ const StaffDetail = (props) => {
       </div>
     );
   } else {
-    return <div>Hello</div>;
+    return <div></div>;
   }
 };
 

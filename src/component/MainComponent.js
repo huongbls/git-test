@@ -4,6 +4,7 @@ import Footer from "./FooterComponent";
 import StaffList from "./StaffListComponent";
 import StaffDetail from "./StaffDetailComponent";
 import DeparmentList from "./DepartmentComponent";
+import DepartmentStaffDetail from "./DepartmentDetailComponent";
 import SalaryList from "./SalaryComponent";
 import "../App.css";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
@@ -19,7 +20,7 @@ const mapStateToProps = (state) => {
   return {
     staffs: state.staffs,
     departments: state.departments,
-    role: state.role,
+    staffsSalary: state.staffsSalary,
   };
 };
 
@@ -68,6 +69,22 @@ class Main extends Component {
       );
     };
 
+    const DepartmentWithId = ({ match }) => {
+      return (
+        <DepartmentStaffDetail
+          staff={this.props.staffs.staffs.filter(
+            (staff) => staff.departmentId === match.params.deptId
+          )}
+          department={this.props.departments}
+          // department={this.props.departments.departments.filter(
+          //   (department) => department.id === parseInt(match.params.deptId, 10)
+          // )}
+          isLoading={this.props.staffs.isLoading}
+          errMess={this.props.staffs.errMess}
+        />
+      );
+    };
+
     return (
       <div>
         <Header />
@@ -85,10 +102,13 @@ class Main extends Component {
               <DeparmentList departments={this.props.departments} />
             )}
           />
+          <Route path="/department/:deptId" component={DepartmentWithId} />
           <Route
             exact
             path="/salary"
-            component={() => <SalaryList staffs={this.props.staffs} />}
+            component={() => (
+              <SalaryList staffsSalary={this.props.staffsSalary} />
+            )}
           />
           <Redirect to="/staff" />
         </Switch>
