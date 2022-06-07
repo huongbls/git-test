@@ -16,7 +16,7 @@ import {
 } from "reactstrap";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import { Link } from "react-router-dom";
-import { DEPARTMENTS } from "../shared/departments";
+// import { DEPARTMENTS } from "../shared/departments";
 import { Loading } from "./LoadingComponent";
 
 function RenderStaffList({ staff }) {
@@ -26,41 +26,38 @@ function RenderStaffList({ staff }) {
         <CardImg width="100%" src={staff.image} alt={staff.name} />
         <CardTitle className="text-center">{staff.name}</CardTitle>
       </Link>
+      <Button className="bg-white text-muted border-white">Delete</Button>
     </Card>
   );
 }
 
-function AddStaff(props) {
-  const [staffArr, setStaffArr] = useState(props.staffs);
-  const [newId, setNewId] = useState(staffArr.length);
+function AddStaff(props, event) {
+  // const [staffArr, setStaffArr] = useState(props.staffs.staffs);
+
+  const [newId, setNewId] = useState(props.staffs.length);
 
   const handleSubmit = (values) => {
     setNewId(newId + 1);
-    const newStaff = {
-      id: newId,
-      name: values.fullname,
-      doB: values.dateofbirth,
-      salaryScale: values.salaryscale,
-      startDate: values.startdate,
-      department:
-        values.department === "Sale"
-          ? DEPARTMENTS[0]
-          : values.department === "HR"
-          ? DEPARTMENTS[1]
-          : values.department === "Marketing"
-          ? DEPARTMENTS[2]
-          : values.department === "IT"
-          ? DEPARTMENTS[3]
-          : DEPARTMENTS[4],
-      annualLeave: values.annualleave,
-      overTime: values.overtime,
-      image: "/assets/images/alberto.png",
-    };
-
-    setStaffArr(staffArr.push(newStaff));
-    localStorage.setItem("newStaff", JSON.stringify(newStaff));
-    localStorage.setItem("staffs", JSON.stringify(staffArr));
-
+    props.postStaff(
+      newId,
+      values.fullname,
+      values.dateofbirth,
+      values.salaryscale,
+      values.startdate,
+      values.department === "Sale"
+        ? "Dept01"
+        : values.department === "HR"
+        ? "Dept02"
+        : values.department === "Marketing"
+        ? "Dept03"
+        : values.department === "IT"
+        ? "Dept04"
+        : "Dept05",
+      values.annualleave,
+      values.overtime,
+      "/assets/images/alberto.png",
+      values.salaryscale * 3e6 + values.overtime * 2e5
+    );
     props.toggleModal();
   };
 
@@ -368,7 +365,11 @@ function StaffList(props) {
             Thêm nhân viên
           </ModalHeader>
           <ModalBody>
-            <AddStaff staffs={props.staffs} toggleModal={toggleModal} />
+            <AddStaff
+              staffs={props.staffs}
+              toggleModal={toggleModal}
+              postStaff={props.postStaff}
+            />
           </ModalBody>
         </Modal>
       </div>

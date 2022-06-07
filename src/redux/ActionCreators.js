@@ -117,3 +117,129 @@ export const addStaffsSalary = (staffsSalary) => ({
   type: ActionTypes.ADD_STAFFSSALARY,
   payload: staffsSalary,
 });
+
+export const addStaff = (newStaff) => ({
+  type: ActionTypes.ADD_STAFF,
+  payload: newStaff,
+});
+
+export const postStaff =
+  (
+    id,
+    name,
+    doB,
+    salaryScale,
+    startDate,
+    departmentId,
+    annualLeave,
+    overTime,
+    image,
+    salary
+  ) =>
+  (dispatch) => {
+    const newStaff = {
+      id: id,
+      name: name,
+      doB: doB,
+      salaryScale: salaryScale,
+      startDate: startDate,
+      departmentId: departmentId,
+      annualLeave: annualLeave,
+      overTime: overTime,
+      image: image,
+      salary: salary,
+    };
+
+    return fetch(baseUrl + "staffs", {
+      method: "POST",
+      body: JSON.stringify(newStaff),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "same-origin",
+    })
+      .then(
+        (response) => {
+          if (response.ok) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            error.response = response;
+            throw error;
+          }
+        },
+        (error) => {
+          throw error;
+        }
+      )
+      .then((res) => res.json())
+      .then((res) => dispatch(addStaff(res)))
+      .catch((error) => {
+        console.log("post staff", error.message);
+        alert("Your Staff could not be posted\nError: " + error.message);
+      });
+  };
+
+// export const addStaff = (newStaff) => ({
+//   type: ActionTypes.ADD_STAFF,
+
+export const deleteStaff =
+  (
+    id,
+    name,
+    doB,
+    salaryScale,
+    startDate,
+    departmentId,
+    annualLeave,
+    overTime,
+    image,
+    salary
+  ) =>
+  (dispatch) => {
+    const newStaff = {
+      id: id,
+      name: name,
+      doB: doB,
+      salaryScale: salaryScale,
+      startDate: startDate,
+      departmentId: departmentId,
+      annualLeave: annualLeave,
+      overTime: overTime,
+      image: image,
+      salary: salary,
+    };
+
+    return fetch(baseUrl + "staffs", {
+      method: "POST",
+      body: JSON.stringify(newStaff),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "same-origin",
+    })
+      .then(
+        (response) => {
+          if (response.ok) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            error.response = response;
+            throw error;
+          }
+        },
+        (error) => {
+          throw error;
+        }
+      )
+      .then((res) => res.json())
+      .then((res) => dispatch(addStaff(res)))
+      .catch((error) => {
+        console.log("post staff", error.message);
+        alert("Your Staff could not be posted\nError: " + error.message);
+      });
+  };

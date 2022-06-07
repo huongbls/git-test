@@ -11,6 +11,7 @@ import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   addStaff,
+  postStaff,
   fetchStaffs,
   fetchDepartments,
   fetchStaffsSalary,
@@ -26,6 +27,32 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  postStaff: (
+    id,
+    name,
+    doB,
+    salaryScale,
+    startDate,
+    departmentId,
+    annualLeave,
+    overTime,
+    image,
+    salary
+  ) =>
+    dispatch(
+      postStaff(
+        id,
+        name,
+        doB,
+        salaryScale,
+        startDate,
+        departmentId,
+        annualLeave,
+        overTime,
+        image,
+        salary
+      )
+    ),
   fetchStaffs: () => {
     dispatch(fetchStaffs());
   },
@@ -59,6 +86,7 @@ class Main extends Component {
           }
           isLoading={this.props.staffs.isLoading}
           errMess={this.props.staffs.errMess}
+          // postStaff={this.props.postStaff}
         />
       );
     };
@@ -88,7 +116,12 @@ class Main extends Component {
               <Route
                 exact
                 path="/staff"
-                component={() => <StaffList staffs={this.props.staffs} />}
+                component={() => (
+                  <StaffList
+                    postStaff={this.props.postStaff}
+                    staffs={this.props.staffs}
+                  />
+                )}
               />
               <Route path="/staff/:staffId" component={StaffWithId} />
               <Route
