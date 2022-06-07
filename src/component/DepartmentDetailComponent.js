@@ -8,13 +8,21 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { Loading } from "./LoadingComponent";
+import { FadeTransform } from "react-animation-components";
 
 function RenderStaffList({ staff }) {
   return (
     <Card className="bg-light">
       <Link to={`/staff/${staff.id}`}>
-        <CardImg width="100%" src={staff.image} alt={staff.name} />
-        <CardTitle className="text-center">{staff.name}</CardTitle>
+        <FadeTransform
+          in
+          transformProps={{
+            exitTransform: "scale(0.8) translateY(50%)",
+          }}
+        >
+          <CardImg width="100%" src={staff.image} alt={staff.name} />
+          <CardTitle className="text-center">{staff.name}</CardTitle>
+        </FadeTransform>
       </Link>
     </Card>
   );
@@ -76,7 +84,7 @@ const DepartmentStaffDetail = (props) => {
       </div>
     );
   } else {
-    return <div>Nothing</div>;
+    return <div></div>;
   }
 };
 

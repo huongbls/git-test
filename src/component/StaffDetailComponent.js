@@ -3,18 +3,26 @@ import { Card, CardImg, Breadcrumb, BreadcrumbItem } from "reactstrap";
 import dateFormat from "dateformat";
 import { Link } from "react-router-dom";
 import { Loading } from "./LoadingComponent";
+import { FadeTransform } from "react-animation-components";
 
 function RenderStaffImg({ staff }) {
   return (
     <div className="col-12 col-md-4 col-lg-3 pb-3">
-      <Card>
-        <CardImg
-          width="100%"
-          object
-          src={staff.image}
-          alt={staff.name}
-        ></CardImg>
-      </Card>
+      <FadeTransform
+        in
+        transformProps={{
+          exitTransform: "scale(0.8) translateY(50%)",
+        }}
+      >
+        <Card>
+          <CardImg
+            width="100%"
+            object
+            src={staff.image}
+            alt={staff.name}
+          ></CardImg>
+        </Card>
+      </FadeTransform>
     </div>
   );
 }
