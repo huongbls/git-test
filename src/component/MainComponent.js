@@ -63,6 +63,9 @@ const mapDispatchToProps = (dispatch) => ({
   fetchStaffsSalary: () => {
     dispatch(fetchStaffsSalary());
   },
+  deleteStaff: (id) => {
+    dispatch(deleteStaff(id));
+  },
 });
 
 class Main extends Component {
@@ -121,9 +124,11 @@ class Main extends Component {
                   <StaffList
                     postStaff={this.props.postStaff}
                     staffs={this.props.staffs}
-                    fetchStaffs={this.props.fetchStaffs}
-                    fetchDepartments={this.props.fetchDepartments}
-                    fetchStaffsSalary={this.props.fetchStaffsSalary}
+                    // fetchStaffs={this.props.fetchStaffs}
+                    // fetchDepartments={this.props.fetchDepartments}
+                    // fetchStaffsSalary={this.props.fetchStaffsSalary}
+                    deleteStaff={this.props.deleteStaff}
+                    // staffsLoading={this.props.staffsLoading}
                   />
                 )}
               />
@@ -132,7 +137,10 @@ class Main extends Component {
                 exact
                 path="/department"
                 component={() => (
-                  <DeparmentList departments={this.props.departments} />
+                  <DeparmentList
+                    departments={this.props.departments}
+                    staffs={this.props.staffs}
+                  />
                 )}
               />
               <Route path="/department/:deptId" component={DepartmentWithId} />

@@ -3,14 +3,14 @@ import { Card, CardText, CardTitle } from "reactstrap";
 import { Loading } from "./LoadingComponent";
 import { Link } from "react-router-dom";
 
-function RenderDepartment({ dep }) {
+function RenderDepartment({ dep, staffNo }) {
   return (
     <div>
       <Card className="bg-light text-dark">
         <Link to={`/department/${dep.id}`}>
           <CardTitle className="text-left p-1">{dep.name}</CardTitle>
           <CardText className="text-left p-3">
-            Số lượng nhân viên: {dep.numberOfStaff}
+            Số lượng nhân viên: {staffNo}
             {/* Số lượng nhân viên:{" "}
           {localStorage.staffs
             ? JSON.parse(localStorage.getItem("staffs")).filter(
@@ -25,10 +25,15 @@ function RenderDepartment({ dep }) {
 }
 
 function DeparmentList(props) {
+  const countStaff = (depId) =>
+    props.staffs.staffs.filter((staff) => staff.departmentId === depId).length;
   const deps = props.departments.departments.map((dep) => {
     return (
       <div key={dep.id} className="col-12 col-md-6 col-lg-4 p-3">
-        <RenderDepartment dep={dep} />
+        <RenderDepartment
+          dep={dep}
+          staffNo={countStaff(dep.id) ? countStaff(dep.id) : 0}
+        />
       </div>
     );
   });

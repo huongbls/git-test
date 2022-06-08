@@ -251,16 +251,6 @@ function AddStaff(props) {
 }
 
 function StaffList(props) {
-  async function deleteStaff(id) {
-    let result = await fetch(
-      `https://rjs101xbackend.herokuapp.com/staffs/${id}`,
-      {
-        method: "DELETE",
-      }
-    );
-    props.fetchStaffs();
-  }
-
   const staffs = props.staffs.staffs
     .sort((a, b) => {
       return a.id - b.id;
@@ -269,7 +259,7 @@ function StaffList(props) {
       return (
         <div key={staff.id} className="col-6 col-md-4 col-lg-2 p-3">
           <RenderStaffList staff={staff} />
-          <Button onClick={() => deleteStaff(staff.id)}>X</Button>
+          <Button onClick={() => props.deleteStaff(staff.id)}>X</Button>
         </div>
       );
     });
@@ -295,7 +285,7 @@ function StaffList(props) {
       return (
         <div key={staff.id} className="col-6 col-md-4 col-lg-2 p-3">
           <RenderStaffList staff={staff} />
-          <Button>X</Button>
+          <Button onClick={() => props.deleteStaff(staff.id)}>X</Button>
         </div>
       );
     });

@@ -182,38 +182,15 @@ export const postStaff =
       });
   };
 
-// export const removeStaff = () => ({
-//   type: ActionTypes.DELETE_STAFF,
-// });
+export const removeStaff = (id) => ({
+  type: ActionTypes.DELETE_STAFF,
+  payload: id,
+});
 
-// export const deleteStaff = (id) => (dispatch) => {
-//   return fetch(baseUrl + `staffs/${id}`, {
-//     method: "DELETE",
-//     // headers: {
-//     //   "Content-Type": "application/json",
-//     // },
-//     // credentials: "same-origin",
-//   })
-//     .then(
-//       (response) => {
-//         if (response.ok) {
-//           return response;
-//         } else {
-//           var error = new Error(
-//             "Error " + response.status + ": " + response.statusText
-//           );
-//           error.response = response;
-//           throw error;
-//         }
-//       },
-//       (error) => {
-//         throw error;
-//       }
-//     )
-//     .then((res) => res.json())
-//     .then((res) => dispatch(addStaffs(res)))
-//     .catch((error) => {
-//       console.log("post staff", error.message);
-//       alert("Your Staff could not be posted\nError: " + error.message);
-//     });
-// };
+export const deleteStaff = (id) => (dispatch) => {
+  if (window.confirm("Are you sure to delete this staff?")) {
+    return fetch(baseUrl + `staffs/${id}`, {
+      method: "DELETE",
+    }).then(() => dispatch(removeStaff(id)));
+  } else return;
+};

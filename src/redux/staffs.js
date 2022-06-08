@@ -1,12 +1,5 @@
 // import { STAFFS } from "../shared/staffs";
 
-// export const Staffs = (state = STAFFS, action) => {
-//   switch (action.type) {
-//     default:
-//       return state;
-//   }
-// };
-
 import * as ActionTypes from "./ActionTypes";
 
 export const Staffs = (
@@ -35,6 +28,12 @@ export const Staffs = (
       };
     case ActionTypes.ADD_STAFF:
       return { ...state, staffs: action.payload };
+
+    case ActionTypes.DELETE_STAFF:
+      const filterStaff = state.staffs.filter(
+        (staff) => staff.id !== action.payload
+      );
+      return { ...state, staffs: filterStaff };
 
     default:
       return state;

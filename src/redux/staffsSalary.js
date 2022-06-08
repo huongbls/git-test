@@ -33,6 +33,13 @@ export const StaffsSalary = (
         isLoading: false,
         errMess: action.payload,
       };
+    case ActionTypes.ADD_STAFF:
+      return { ...state, staffsSalary: action.payload };
+    case ActionTypes.DELETE_STAFF:
+      const filterStaffsSalary = state.staffsSalary.filter(
+        (staff) => staff.id !== action.payload
+      );
+      return { ...state, staffsSalary: filterStaffsSalary };
     default:
       return state;
   }

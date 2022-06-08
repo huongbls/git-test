@@ -33,6 +33,8 @@ export const Departments = (
         isLoading: false,
         errMess: action.payload,
       };
+    // case ActionTypes.ADD_STAFF:
+    //   return { ...state, departments: action.payload };
     default:
       return state;
   }
