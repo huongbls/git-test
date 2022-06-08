@@ -15,6 +15,7 @@ import {
   fetchStaffs,
   fetchDepartments,
   fetchStaffsSalary,
+  deleteStaff,
 } from "../redux/ActionCreators";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
@@ -120,6 +121,9 @@ class Main extends Component {
                   <StaffList
                     postStaff={this.props.postStaff}
                     staffs={this.props.staffs}
+                    fetchStaffs={this.props.fetchStaffs}
+                    fetchDepartments={this.props.fetchDepartments}
+                    fetchStaffsSalary={this.props.fetchStaffsSalary}
                   />
                 )}
               />

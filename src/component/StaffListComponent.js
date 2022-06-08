@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Card,
   CardImg,
@@ -16,7 +16,6 @@ import {
 } from "reactstrap";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import { Link } from "react-router-dom";
-// import { DEPARTMENTS } from "../shared/departments";
 import { Loading } from "./LoadingComponent";
 
 function RenderStaffList({ staff }) {
@@ -26,12 +25,11 @@ function RenderStaffList({ staff }) {
         <CardImg width="100%" src={staff.image} alt={staff.name} />
         <CardTitle className="text-center">{staff.name}</CardTitle>
       </Link>
-      <Button className="bg-white text-muted border-white">Delete</Button>
     </Card>
   );
 }
 
-function AddStaff(props, event) {
+function AddStaff(props) {
   // const [staffArr, setStaffArr] = useState(props.staffs.staffs);
 
   const [newId, setNewId] = useState(props.staffs.length);
@@ -145,6 +143,7 @@ function AddStaff(props, event) {
             model=".startdate"
             type="date"
             id="startdate"
+            staff
             // value={this.state.tenState}
             name="startdate"
             className="form-control"
@@ -252,6 +251,16 @@ function AddStaff(props, event) {
 }
 
 function StaffList(props) {
+  async function deleteStaff(id) {
+    let result = await fetch(
+      `https://rjs101xbackend.herokuapp.com/staffs/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+    props.fetchStaffs();
+  }
+
   const staffs = props.staffs.staffs
     .sort((a, b) => {
       return a.id - b.id;
@@ -260,6 +269,7 @@ function StaffList(props) {
       return (
         <div key={staff.id} className="col-6 col-md-4 col-lg-2 p-3">
           <RenderStaffList staff={staff} />
+          <Button onClick={() => deleteStaff(staff.id)}>X</Button>
         </div>
       );
     });
@@ -285,6 +295,7 @@ function StaffList(props) {
       return (
         <div key={staff.id} className="col-6 col-md-4 col-lg-2 p-3">
           <RenderStaffList staff={staff} />
+          <Button>X</Button>
         </div>
       );
     });
@@ -350,6 +361,7 @@ function StaffList(props) {
         </div>
         <hr></hr>
         <div className="row">{searchValue ? searchStaff : staffs}</div>
+        {/* <div className="row">{staffs}</div> */}
 
         <Modal
           isOpen={modalIsOpen}
