@@ -59,7 +59,7 @@ const DepartmentStaffDetail = (props) => {
         </div>
       </div>
     );
-  } else if (props.staff != null) {
+  } else if (props.staff.length > 0) {
     return (
       <div className="container">
         <div className="row">
@@ -84,7 +84,19 @@ const DepartmentStaffDetail = (props) => {
       </div>
     );
   } else {
-    return <div></div>;
+    return (
+      <div className="container">
+        <div className="row">
+          <Breadcrumb>
+            <BreadcrumbItem>
+              <Link to="/department">Phòng Ban</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active></BreadcrumbItem>
+          </Breadcrumb>
+        </div>
+        <div className="row pb-5"></div>
+      </div>
+    );
   }
 };
 

@@ -1,5 +1,3 @@
-// import { STAFFS } from "../shared/staffs";
-
 import * as ActionTypes from "./ActionTypes";
 
 export const Staffs = (
@@ -20,12 +18,14 @@ export const Staffs = (
       };
     case ActionTypes.STAFFS_LOADING:
       return { ...state, isLoading: true, errMess: null, staffs: [] };
+
     case ActionTypes.STAFFS_FAILED:
       return {
         ...state,
         isLoading: false,
         errMess: action.payload,
       };
+
     case ActionTypes.ADD_STAFF:
       return { ...state, staffs: action.payload };
 
@@ -34,6 +34,9 @@ export const Staffs = (
         (staff) => staff.id !== action.payload
       );
       return { ...state, staffs: filterStaff };
+
+    case ActionTypes.UPDATE_STAFF:
+      return { ...state, staffs: action.payload };
 
     default:
       return state;

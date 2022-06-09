@@ -30,10 +30,7 @@ function RenderStaffList({ staff }) {
 }
 
 function AddStaff(props) {
-  // const [staffArr, setStaffArr] = useState(props.staffs.staffs);
-
   const [newId, setNewId] = useState(props.staffs.length);
-
   const handleSubmit = (values) => {
     setNewId(newId + 1);
     props.postStaff(

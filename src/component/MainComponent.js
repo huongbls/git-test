@@ -10,12 +10,12 @@ import "../App.css";
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
 import {
-  addStaff,
-  postStaff,
   fetchStaffs,
   fetchDepartments,
   fetchStaffsSalary,
+  postStaff,
   deleteStaff,
+  patchStaff,
 } from "../redux/ActionCreators";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 
@@ -42,6 +42,32 @@ const mapDispatchToProps = (dispatch) => ({
   ) =>
     dispatch(
       postStaff(
+        id,
+        name,
+        doB,
+        salaryScale,
+        startDate,
+        departmentId,
+        annualLeave,
+        overTime,
+        image,
+        salary
+      )
+    ),
+  patchStaff: (
+    id,
+    name,
+    doB,
+    salaryScale,
+    startDate,
+    departmentId,
+    annualLeave,
+    overTime,
+    image,
+    salary
+  ) =>
+    dispatch(
+      patchStaff(
         id,
         name,
         doB,
@@ -90,6 +116,7 @@ class Main extends Component {
           }
           isLoading={this.props.staffs.isLoading}
           errMess={this.props.staffs.errMess}
+          patchStaff={this.props.patchStaff}
           // postStaff={this.props.postStaff}
         />
       );
@@ -124,11 +151,8 @@ class Main extends Component {
                   <StaffList
                     postStaff={this.props.postStaff}
                     staffs={this.props.staffs}
-                    // fetchStaffs={this.props.fetchStaffs}
-                    // fetchDepartments={this.props.fetchDepartments}
-                    // fetchStaffsSalary={this.props.fetchStaffsSalary}
                     deleteStaff={this.props.deleteStaff}
-                    // staffsLoading={this.props.staffsLoading}
+                    patchStaff={this.props.patchStaff}
                   />
                 )}
               />

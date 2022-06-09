@@ -194,3 +194,67 @@ export const deleteStaff = (id) => (dispatch) => {
     }).then(() => dispatch(removeStaff(id)));
   } else return;
 };
+
+export const updateStaff = (staff) => ({
+  type: ActionTypes.UPDATE_STAFF,
+  payload: staff,
+});
+
+export const patchStaff =
+  (
+    id,
+    name,
+    doB,
+    salaryScale,
+    startDate,
+    departmentId,
+    annualLeave,
+    overTime,
+    image,
+    salary
+  ) =>
+  (dispatch) => {
+    const staffToUpdate = {
+      id: id,
+      name: name,
+      doB: doB,
+      salaryScale: salaryScale,
+      startDate: startDate,
+      departmentId: departmentId,
+      annualLeave: annualLeave,
+      overTime: overTime,
+      image: image,
+      salary: salary,
+    };
+
+    return fetch(baseUrl + "staffs", {
+      method: "PATCH",
+      body: JSON.stringify(staffToUpdate),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "same-origin",
+    })
+      .then(
+        (response) => {
+          if (response.ok) {
+            return response;
+          } else {
+            var error = new Error(
+              "Error " + response.status + ": " + response.statusText
+            );
+            error.response = response;
+            throw error;
+          }
+        },
+        (error) => {
+          throw error;
+        }
+      )
+      .then((res) => res.json())
+      .then((res) => dispatch(updateStaff(res)))
+      .catch((error) => {
+        console.log("patch staff", error.message);
+        alert("Your Staff could not be patched\nError: " + error.message);
+      });
+  };
