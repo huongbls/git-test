@@ -54,7 +54,7 @@ function ReviseStaff({ staff, patchStaff, toggleModal }) {
           Tên
         </Label>
         <Col className="col-sm-12 col-md-8">
-          <Control.text
+          <Control.Text
             model=".fullname"
             id="fullname"
             type="text"
@@ -95,7 +95,7 @@ function ReviseStaff({ staff, patchStaff, toggleModal }) {
           Ngày Sinh
         </Label>
         <Col className="col-sm-12 col-md-8">
-          <Control.text
+          <Control.Text
             model=".dateofbirth"
             type="date"
             id="dateofbirth"
@@ -112,7 +112,7 @@ function ReviseStaff({ staff, patchStaff, toggleModal }) {
           Ngày vào công ty
         </Label>
         <Col className="col-sm-12 col-md-8">
-          <Control.text
+          <Control.Text
             model=".startdate"
             type="date"
             id="startdate"
@@ -129,7 +129,7 @@ function ReviseStaff({ staff, patchStaff, toggleModal }) {
           Phòng Ban
         </Label>
         <Col className="col-sm-12 col-md-8">
-          <Control.select
+          <Control.Select
             model=".department"
             type="select"
             name="department"
@@ -151,7 +151,7 @@ function ReviseStaff({ staff, patchStaff, toggleModal }) {
             <option>Marketing</option>
             <option>IT</option>
             <option>Finance</option>
-          </Control.select>
+          </Control.Select>
         </Col>
       </Row>
       <Row className="form-group">
@@ -162,7 +162,7 @@ function ReviseStaff({ staff, patchStaff, toggleModal }) {
           Hệ số lương
         </Label>
         <Col className="col-sm-12 col-md-8">
-          <Control.text
+          <Control.Text
             model=".salaryscale"
             type="number"
             step="0.1"
@@ -183,7 +183,7 @@ function ReviseStaff({ staff, patchStaff, toggleModal }) {
           Số ngày nghỉ còn lại
         </Label>
         <Col className="col-sm-12 col-md-8">
-          <Control.text
+          <Control.Text
             model=".annualleave"
             type="number"
             id="annualleave"
@@ -199,7 +199,7 @@ function ReviseStaff({ staff, patchStaff, toggleModal }) {
           Số ngày đã làm thêm
         </Label>
         <Col className="col-sm-12 col-md-8">
-          <Control.text
+          <Control.Text
             model=".overtime"
             type="number"
             id="overtime"

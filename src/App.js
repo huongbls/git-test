@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import Main from "./component/MainComponent";
 import "./App.css";
 import { BrowserRouter } from "react-router-dom";
+import Test from "./component/Test";
 
 const store = ConfigureStore();
 
@@ -14,6 +15,7 @@ class App extends Component {
         <BrowserRouter>
           <div className="App">
             <Main />
+            {/* <Test /> */}
           </div>
         </BrowserRouter>
       </Provider>

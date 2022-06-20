@@ -8,9 +8,9 @@ import "font-awesome/css/font-awesome.min.css";
 import "bootstrap-social/bootstrap-social.css";
 
 ReactDOM.render(
-  <React.StrictMode>
+  <React.Fragment>
     <App />
-  </React.StrictMode>,
+  </React.Fragment>,
   document.getElementById("root")
 );
 

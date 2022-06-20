@@ -6,7 +6,6 @@ import {
   NavbarToggler,
   Collapse,
   NavItem,
-  Jumbotron,
 } from "reactstrap";
 import { NavLink } from "react-router-dom";
 
